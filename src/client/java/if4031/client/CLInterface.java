@@ -38,7 +38,7 @@ public class CLInterface {
             out.print(COMMAND_PROMPT);
             commandString = scanner.nextLine();
 
-            // TODO commands to command package
+            // TODO move to command parser
             if (commandString.equals("/exit")) {
                 break;
 
@@ -61,9 +61,6 @@ public class CLInterface {
             String newNickname = cmd.getNewNickname();
             ircClient.changeNickname(newNickname);
             out.println("Nickname changed to " + newNickname);
-
-        } else if (command instanceof GetMessagesCommand) {
-            // TODO delete GetMessagesCommand
 
         } else if (command instanceof JoinChannelCommand) {
             JoinChannelCommand cmd = (JoinChannelCommand) command;

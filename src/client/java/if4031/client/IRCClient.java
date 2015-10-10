@@ -1,6 +1,7 @@
 package if4031.client;
 
 import com.rabbitmq.client.*;
+import if4031.client.util.RandomString;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -14,7 +15,6 @@ public class IRCClient {
     private final Channel channel;
     private final Consumer consumer;
 
-    // TODO generate random nickname
     private String nickname;
     private Set<String> joinedChannel = new HashSet<String>();
 
@@ -28,6 +28,8 @@ public class IRCClient {
         String clientQueueName = channel.queueDeclare().getQueue();
         consumer = new QueueingConsumer(channel);
         channel.basicConsume(clientQueueName, true, consumer);
+
+        nickname = new RandomString().randomString(16);
     }
 
     void start() {

@@ -55,13 +55,7 @@ public class CommandParser {
             */
             case '/': {
                 String[] tokens = line.substring(1).split("\\s+");
-                if (tokens.length == 1) {
-                    String command = tokens[0].toLowerCase();
-                    if (command.equals("refresh")) {
-                        return new ParseResult(ParseStatus.OK, OK_TEXT, new GetMessagesCommand());
-                    }
-
-                } else if (tokens.length == 2) {
+                if (tokens.length == 2) {
                     String command = tokens[0].toLowerCase();
                     if (command.equals("nick")) {
                         String newNickname = tokens[1];
