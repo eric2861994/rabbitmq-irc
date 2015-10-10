@@ -1,15 +1,10 @@
 package if4031.client;
 
 import com.rabbitmq.client.*;
-import if4031.client.command.Command;
 import if4031.client.command.IRCCommandFactory;
-import if4031.client.executor.DelayableRepeatingExecutor;
-import if4031.client.rpc.Message;
-import if4031.client.rpc.RPCException;
 
 import java.io.IOException;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeoutException;
 
@@ -21,14 +16,13 @@ public class IRCClient {
 
     // TODO generate random nickname
     private String nickname;
+    private Set<String> joinedChannel = new HashSet<String>();
 
     // obsolete instance variable below
-
     private final IRCCommandFactory ircCommandFactory = new IRCCommandFactory();
     private IRCClientListener ircClientListener;
     private int userID;
     private int channelCount;
-    private Set<String> joinedChannel = new HashSet<String>();
 
     public IRCClient(String server, int port) throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
@@ -75,7 +69,8 @@ public class IRCClient {
      * Join a channel.
      * Equivalent to binding to our queue to an exchange in rabbitgMQ.
      * TODO implement
-     * @param channelName    channel to join
+     *
+     * @param channelName channel to join
      */
     public void joinChannel(String channelName) {
     }
@@ -84,7 +79,8 @@ public class IRCClient {
      * Leave a channel.
      * Equivalent to unbinding our queue from an exchange in rabbitMQ.
      * TODO implement
-     * @param channelName    channel to leave.
+     *
+     * @param channelName channel to leave.
      */
     public void leaveChannel(String channelName) {
 
@@ -95,7 +91,8 @@ public class IRCClient {
      * Equivalent to sending messages to many exchanges in rabbitMQ.
      * joined channel is maintained in client.
      * TODO implement
-     * @param message    message
+     *
+     * @param message message
      */
     public void sendMessageAll(String message) {
 
@@ -107,20 +104,11 @@ public class IRCClient {
      * must check first whether we have joined the channel or not.
      * joined channel is maintained in client.
      * TODO implement
-     * @param channelName    channel name
-     * @param message        message
+     *
+     * @param channelName channel name
+     * @param message     message
      */
     public void sendMessageChannel(String channelName, String message) {
 
-    }
-
-    void parseExecute(String line) {
-        IRCCommandFactory.ParseResult parseResult = ircCommandFactory.parse(line);
-
-        IRCCommandFactory.ParseStatus status = parseResult.getStatus();
-        if (status == IRCCommandFactory.ParseStatus.OK) {
-            Command command = parseResult.getCommand();
-            command.execute(this);
-        }
     }
 }

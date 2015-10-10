@@ -1,5 +1,7 @@
 package if4031.client;
 
+import if4031.client.command.Command;
+import if4031.client.command.IRCCommandFactory;
 import if4031.client.rpc.Message;
 
 import java.io.PrintStream;
@@ -64,6 +66,16 @@ class CLInterface implements IRCClientListener {
         printMessages();
     }
 
+    void parseExecute(String line) {
+        IRCCommandFactory.ParseResult parseResult = ircCommandFactory.parse(line);
+
+        IRCCommandFactory.ParseStatus status = parseResult.getStatus();
+        if (status == IRCCommandFactory.ParseStatus.OK) {
+            Command command = parseResult.getCommand();
+            command.execute(this);
+        }
+    }
+
     @Override
     public void notifyFailure(int failureCode, String reason) {
         messagesQ.add("Failure " + failureCode + ": " + reason);
@@ -100,8 +112,6 @@ class CLInterface implements IRCClientListener {
     public void notifyNicknameChange(String newNickname) {
         messagesQ.add("Nickname changed to " + newNickname);
     }
-
-
 
     private static String PROGRAM_NAME = "gRPC IRC";
     private static String WELCOME_MESSAGE = "Welcome to " + PROGRAM_NAME + "!\nEnter your nickname to login..\n";
