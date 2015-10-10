@@ -5,7 +5,7 @@ import if4031.client.IRCClient;
 /**
  * Command to send a message to a specific channel.
  */
-class SendMessageChannel implements Command {
+public class SendMessageChannel implements Command {
     private final String channelName;
     private final String message;
 
@@ -14,13 +14,16 @@ class SendMessageChannel implements Command {
         message = _message;
     }
 
-    @Override
-    public String toString() {
-        return '@' + channelName + ' ' + message;
+    public String getChannelName() {
+        return channelName;
+    }
+
+    public String getMessage() {
+        return message;
     }
 
     @Override
-    public void execute(IRCClient ircClient) {
-        ircClient.sendMessageChannel(channelName, message);
+    public String toString() {
+        return '@' + channelName + ' ' + message;
     }
 }

@@ -21,7 +21,6 @@ public class ClientProgram {
         Scanner scanner = new Scanner(System.in);
         CLInterface clInterface = new CLInterface(scanner, System.out, ircClient);
 
-        ircClient.setIrcClientListener(clInterface);
         ircClient.start();
         clInterface.run();
 

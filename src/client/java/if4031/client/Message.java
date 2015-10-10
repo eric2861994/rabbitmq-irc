@@ -1,4 +1,4 @@
-package if4031.client.rpc;
+package if4031.client;
 
 public class Message {
 

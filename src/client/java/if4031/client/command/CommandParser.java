@@ -1,6 +1,6 @@
 package if4031.client.command;
 
-public class IRCCommandFactory {
+public class CommandParser {
     public enum ParseStatus {
         OK, ERROR
     }

@@ -1,10 +1,10 @@
 package if4031.client;
 
 import com.rabbitmq.client.*;
-import if4031.client.command.IRCCommandFactory;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeoutException;
 
@@ -17,12 +17,6 @@ public class IRCClient {
     // TODO generate random nickname
     private String nickname;
     private Set<String> joinedChannel = new HashSet<String>();
-
-    // obsolete instance variable below
-    private final IRCCommandFactory ircCommandFactory = new IRCCommandFactory();
-    private IRCClientListener ircClientListener;
-    private int userID;
-    private int channelCount;
 
     public IRCClient(String server, int port) throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
@@ -43,10 +37,6 @@ public class IRCClient {
         connection.close();
     }
 
-    public void setIrcClientListener(IRCClientListener _ircClientListener) {
-        ircClientListener = _ircClientListener;
-    }
-
     /**
      * Change nickname.
      * Nickname is stored in client because rabbitmq server cannot store it.
@@ -62,7 +52,8 @@ public class IRCClient {
      * Notify listener for the new messages.
      * TODO implement
      */
-    public void getMessages() {
+    public List<Message> getMessages() {
+        return null;
     }
 
     /**
