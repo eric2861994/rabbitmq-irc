@@ -22,9 +22,11 @@ public class ServerProgram {
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
 
-        channel.queueDeclare(QUEUE_NAME, false, false, false, null);
-        String message = "Hello World!";
-        channel.basicPublish("", QUEUE_NAME, null, message.getBytes());
+        channel.exchangeDeclare("direct_logs","direct");
+        String severity = "mysevere";
+//        channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+        String message = "Hello Worldb!";
+        channel.basicPublish("direct_logs", severity, null, message.getBytes());
         System.out.println(" [x] Sent '" + message + "'");
         channel.close();
         connection.close();
