@@ -29,6 +29,8 @@ public class IRCClient {
         connection = factory.newConnection();
         channel = connection.createChannel();
 
+        exchangeName = _exchangeName;
+        channel.exchangeDeclare(exchangeName,"direct");
         clientQueueName = channel.queueDeclare().getQueue();
         consumer = new DefaultConsumer(channel) {
             @Override
@@ -41,10 +43,8 @@ public class IRCClient {
             }
         };
         channel.basicConsume(clientQueueName, true, consumer);
-
         nickname = new RandomString().randomString(16);
 
-        exchangeName = _exchangeName;
     }
 
     void start() {
