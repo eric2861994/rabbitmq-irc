@@ -88,7 +88,6 @@ public class IRCClient {
      * Send Message to all joined channels.
      * Equivalent to sending messages to many exchanges in rabbitMQ.
      * joined channel is maintained in client.
-     * TODO implement
      *
      * @param message message
      */
@@ -104,7 +103,6 @@ public class IRCClient {
      * Equivalent to sending message to an exchange in rabbitMQ.
      * must check first whether we have joined the channel or not.
      * joined channel is maintained in client.
-     * TODO implement
      *
      * @param channelName channel name
      * @param message     message
