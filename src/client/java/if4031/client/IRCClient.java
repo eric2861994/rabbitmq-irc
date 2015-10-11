@@ -4,9 +4,8 @@ import com.rabbitmq.client.*;
 import if4031.client.util.RandomString;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.io.UnsupportedEncodingException;
+import java.util.*;
 import java.util.concurrent.TimeoutException;
 
 public class IRCClient {
@@ -16,9 +15,12 @@ public class IRCClient {
     private final Consumer consumer;
     private final String exchangeName;
     private final String clientQueueName;
+    private final Object messageQueueLock = new Object();
 
     private String nickname;
     private Set<String> joinedChannel = new HashSet<String>();
+
+    private Queue<Message> messageQueue = new LinkedList<Message>();
 
     public IRCClient(String server, int port, String _exchangeName) throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
@@ -28,7 +30,16 @@ public class IRCClient {
         channel = connection.createChannel();
 
         clientQueueName = channel.queueDeclare().getQueue();
-        consumer = new QueueingConsumer(channel);
+        consumer = new DefaultConsumer(channel) {
+            @Override
+            public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws UnsupportedEncodingException {
+                String messageBody = new String(body, "UTF-8");
+                Message message = new Message(envelope.getRoutingKey(), messageBody);
+                synchronized (messageQueueLock) {
+                    messageQueue.add(message);
+                }
+            }
+        };
         channel.basicConsume(clientQueueName, true, consumer);
 
         nickname = new RandomString().randomString(16);
@@ -56,10 +67,15 @@ public class IRCClient {
     /**
      * Get messages from our queue in rabbitMQ.
      * Notify listener for the new messages.
-     * TODO implement
      */
     public List<Message> getMessages() {
-        return null;
+        List<Message> result = new ArrayList<Message>();
+        synchronized (messageQueueLock) {
+            while (!messageQueue.isEmpty()) {
+                result.add(messageQueue.remove());
+            }
+        }
+        return result;
     }
 
     /**
