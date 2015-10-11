@@ -21,14 +21,21 @@ public class IRCClient {
     public IRCClient(String server, int port) throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost(server);
-        factory.setPort(port);
+//        factory.setPort(port);
         connection = factory.newConnection();
         channel = connection.createChannel();
 
         String clientQueueName = channel.queueDeclare().getQueue();
-        consumer = new QueueingConsumer(channel);
+//        consumer = new QueueingConsumer(channel);
+        consumer = new QueueingConsumer(channel) {
+            @Override
+            public void handleDelivery(String consumerTag, Envelope envelope,
+                                       AMQP.BasicProperties properties, byte[] body) throws IOException {
+                String message = new String(body, "UTF-8");
+                System.out.println(" [x] Received '" + envelope.getRoutingKey() + "':'" + message + "'");
+            }
+        };
         channel.basicConsume(clientQueueName, true, consumer);
-
         nickname = new RandomString().randomString(16);
     }
 
@@ -66,6 +73,7 @@ public class IRCClient {
      * @param channelName channel to join
      */
     public void joinChannel(String channelName) {
+
     }
 
     /**

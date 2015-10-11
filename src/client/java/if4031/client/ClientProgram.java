@@ -13,10 +13,12 @@ public class ClientProgram {
 
     public static void main(String[] args) throws IOException, InterruptedException, TimeoutException {
 
-        ClientConfiguration configuration = new PropertyConfiguration(PROPERTY_FILE);
+//        ClientConfiguration configuration = new PropertyConfiguration(PROPERTY_FILE);
+        String serverAddress = "localhost";
+        int serverPort = 9090;
 
-        String serverAddress = configuration.getString("serverAddress");
-        int serverPort = configuration.getInt("serverPort");
+//        String serverAddress = configuration.getString("serverAddress");
+//        int serverPort = configuration.getInt("serverPort");
         IRCClient ircClient = new IRCClient(serverAddress, serverPort);
         Scanner scanner = new Scanner(System.in);
         CLInterface clInterface = new CLInterface(scanner, System.out, ircClient);

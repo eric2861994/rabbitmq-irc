@@ -21,8 +21,10 @@ public class CLInterface {
 
     private void printMessages() {
         List<Message> messageList = ircClient.getMessages();
-        for (Message message : messageList) {
-            out.println("[" + message.getChannel() + "] (" + message.getSender() + "): " + message.getBody());
+        if (messageList != null) {
+            for (Message message : messageList) {
+                out.println("[" + message.getChannel() + "] (" + message.getSender() + "): " + message.getBody());
+            }
         }
     }
 
