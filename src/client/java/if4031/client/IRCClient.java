@@ -110,7 +110,7 @@ public class IRCClient {
     public void sendMessageAll(String message) throws IOException {
         String sent = "(" + nickname + "): " + message;
         for (String mychannel : joinedChannel) {
-            channel.basicPublish(exchangeName, mychannel, null, sent.getBytes());
+            channel.basicPublish(exchangeName, mychannel, null, sent.getBytes("UTF-8"));
         }
     }
 
@@ -126,7 +126,7 @@ public class IRCClient {
     public void sendMessageChannel(String channelName, String message) throws IOException {
         if (joinedChannel.contains(channelName)) {
             String sent = "(" + nickname + "): " + message;
-            channel.basicPublish(exchangeName, channelName, null, sent.getBytes());
+            channel.basicPublish(exchangeName, channelName, null, sent.getBytes("UTF-8"));
         }
     }
 }

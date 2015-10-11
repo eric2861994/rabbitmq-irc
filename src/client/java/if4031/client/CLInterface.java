@@ -2,6 +2,7 @@ package if4031.client;
 
 import if4031.client.command.*;
 
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.List;
 import java.util.Scanner;
@@ -23,7 +24,7 @@ public class CLInterface {
         List<Message> messageList = ircClient.getMessages();
         if (messageList != null) {
             for (Message message : messageList) {
-                out.println("[" + message.getChannel() + "] (" + message.getSender() + "): " + message.getBody());
+                out.println("[" + message.getChannel() + "] " + message.getBody());
             }
         }
     }
@@ -61,24 +62,41 @@ public class CLInterface {
         } else if (command instanceof JoinChannelCommand) {
             JoinChannelCommand cmd = (JoinChannelCommand) command;
             String channelName = cmd.getChannelName();
-            ircClient.joinChannel(channelName);
-            out.println("Joined channel: " + channelName);
+            try {
+                ircClient.joinChannel(channelName);
+                out.println("Joined channel: " + channelName);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
         } else if (command instanceof LeaveChannelCommand) {
             LeaveChannelCommand cmd = (LeaveChannelCommand) command;
             String channelName = cmd.getChannelName();
-            ircClient.leaveChannel(channelName);
-            out.println("Left channel: " + channelName);
+            try {
+                ircClient.leaveChannel(channelName);
+                out.println("Left channel: " + channelName);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
         } else if (command instanceof SendMessageAll) {
             SendMessageAll cmd = (SendMessageAll) command;
-            ircClient.sendMessageAll(cmd.getMessage());
-            out.println("Message sent");
+            try {
+                ircClient.sendMessageAll(cmd.getMessage());
+                out.println("Message sent");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
         } else if (command instanceof SendMessageChannel) {
             SendMessageChannel cmd = (SendMessageChannel) command;
-            ircClient.sendMessageChannel(cmd.getChannelName(), cmd.getMessage());
-            out.println("Message sent");
+            try {
+                ircClient.sendMessageChannel(cmd.getChannelName(), cmd.getMessage());
+                out.println("Message sent");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
         } else {
             // never happen
@@ -86,8 +104,6 @@ public class CLInterface {
     }
 
     private static String PROGRAM_NAME = "Rabbit MQ - IRC";
-    private static String WELCOME_MESSAGE = "Welcome to " + PROGRAM_NAME + "!\nEnter your nickname to login..\n";
-    private static String ERROR_MESSAGE = "Error!";
-    private static String NICKNAME_PROMPT = "nickname: ";
+    private static String WELCOME_MESSAGE = "Welcome to " + PROGRAM_NAME + "!\nChange your nickname with /nick command\n";
     private static String COMMAND_PROMPT = ">> ";
 }
