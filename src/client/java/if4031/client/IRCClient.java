@@ -68,23 +68,21 @@ public class IRCClient {
     /**
      * Join a channel.
      * Equivalent to binding to our queue to an exchange in rabbitgMQ.
-     * TODO implement
      *
      * @param channelName channel to join
      */
     public void joinChannel(String channelName) {
-
+        this.joinedChannel.add(channelName);
     }
 
     /**
      * Leave a channel.
      * Equivalent to unbinding our queue from an exchange in rabbitMQ.
-     * TODO implement
      *
      * @param channelName channel to leave.
      */
     public void leaveChannel(String channelName) {
-
+        this.joinedChannel.remove(channelName);
     }
 
     /**

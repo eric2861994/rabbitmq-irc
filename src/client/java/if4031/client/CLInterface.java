@@ -91,7 +91,7 @@ public class CLInterface {
         }
     }
 
-    private static String PROGRAM_NAME = "gRPC IRC";
+    private static String PROGRAM_NAME = "Rabbit MQ - IRC";
     private static String WELCOME_MESSAGE = "Welcome to " + PROGRAM_NAME + "!\nEnter your nickname to login..\n";
     private static String ERROR_MESSAGE = "Error!";
     private static String NICKNAME_PROMPT = "nickname: ";
