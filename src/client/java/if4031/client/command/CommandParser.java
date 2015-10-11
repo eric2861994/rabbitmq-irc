@@ -2,7 +2,7 @@ package if4031.client.command;
 
 public class CommandParser {
     public enum ParseStatus {
-        OK, ERROR
+        OK, ERROR, EMPTY, EXIT
     }
 
     public class ParseResult {
@@ -43,6 +43,10 @@ public class CommandParser {
      * @return ParseResult
      */
     public ParseResult parse(String line) {
+        if (line.equals("")) {
+            return new ParseResult(ParseStatus.EMPTY, "", null);
+        }
+
         // line must contains at least one character
         switch (line.charAt(0)) {
             /*
@@ -55,7 +59,13 @@ public class CommandParser {
             */
             case '/': {
                 String[] tokens = line.substring(1).split("\\s+");
-                if (tokens.length == 2) {
+                if (tokens.length == 1) {
+                    String command = tokens[0].toLowerCase();
+                    if (command.equals("exit")) {
+                        return new ParseResult(ParseStatus.EXIT, "", null);
+                    }
+
+                } else if (tokens.length == 2) {
                     String command = tokens[0].toLowerCase();
                     if (command.equals("nick")) {
                         String newNickname = tokens[1];

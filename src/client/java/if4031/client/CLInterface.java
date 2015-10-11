@@ -36,23 +36,17 @@ public class CLInterface {
         String commandString;
         while (true) {
             printMessages();
-
             out.print(COMMAND_PROMPT);
             commandString = scanner.nextLine();
+            CommandParser.ParseResult parseResult = commandParser.parse(commandString);
 
-            // TODO move to command parser
-            if (commandString.equals("/exit")) {
+            CommandParser.ParseStatus status = parseResult.getStatus();
+            if (status == CommandParser.ParseStatus.OK) {
+                Command cmd = parseResult.getCommand();
+                process(cmd);
+
+            } else if (status == CommandParser.ParseStatus.EXIT) {
                 break;
-
-            } else if (commandString.equals("")) {
-                // do nothing
-
-            } else {
-                CommandParser.ParseResult parseResult = commandParser.parse(commandString);
-                if (parseResult.getStatus() == CommandParser.ParseStatus.OK) {
-                    Command cmd = parseResult.getCommand();
-                    process(cmd);
-                }
             }
         }
     }

@@ -7,4 +7,4 @@ Tugas PAT IRC dengan rabbit MQ. Jika diperlukan, contact Eric untuk java library
 - [ ] leaveChannel
 - [ ] sendMessageAll
 - [ ] sendMessageChannel
-- [ ] generate random initial nickname
+- [x] generate random initial nickname

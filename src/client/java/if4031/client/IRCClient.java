@@ -18,7 +18,7 @@ public class IRCClient {
     private String nickname;
     private Set<String> joinedChannel = new HashSet<String>();
 
-    public IRCClient(String server, int port) throws IOException, TimeoutException {
+    public IRCClient(String server, int port, String exchangeName) throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost(server);
 //        factory.setPort(port);
@@ -73,6 +73,7 @@ public class IRCClient {
      */
     public void joinChannel(String channelName) {
         this.joinedChannel.add(channelName);
+        channel.queueBind(queueName, EXCHANGE_NAME, severity);
     }
 
     /**
